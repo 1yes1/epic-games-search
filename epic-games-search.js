@@ -25,13 +25,10 @@ async function findGameWithName(req,isComingSoon) {
   params["categories"] = getParams.categories;
   params["searchWords"] = encodeURIComponent(searchWords);
   // params["searchWords"] = "mount";
-  params["locale"] = getParams.locale.toUpperCase();
-  params["country"] = getParams.country.toUpperCase();
+  params["locale"] = getParams.locale.toLowerCase();//Dil
+  params["country"] = getParams.country.toUpperCase();//Fiyat
 
   params["count"] = 40;
-
-
-  // return getParams.locale;
 
   const hashes = ["7d58e12d9dd8cb14c84a3ff18d360bf9f0caa96bf218f2c5fda68ba88d68a437"];
   const index = Math.floor(Math.random() * hashes.length);
@@ -47,7 +44,7 @@ async function findGameWithName(req,isComingSoon) {
       .then((response) => response.json())
       .then(function(response) {
 
-        if (response == null || !response["data"]) {
+        if (response == null || response["data"]["Catalog"]["searchStore"] === null) {
           return (noResultReturn(searchWords, "0"));
         }
 
