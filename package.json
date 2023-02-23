@@ -1,0 +1,16 @@
+{
+  "name": "find-epic-games-with-steam-id",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "author": "YeS",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "node-fetch": "^3.3.0",
+    "string-similarity": "^4.0.4"
+  }
+}
