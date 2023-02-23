@@ -26,6 +26,7 @@ app.get('/comingSoon/:categories/:locale/:country/',(req,res)=>{
 
 app.get('/onSale/:categories/:locale/:country/',(req,res)=>{
 
+
     // res.send(req.params);
     // epic.setAppProperties();
     epic.findGameWithName(req,false).then((result) => {

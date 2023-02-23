@@ -47,7 +47,7 @@ async function findGameWithName(req,isComingSoon) {
       .then((response) => response.json())
       .then(function(response) {
 
-        if (response == null || response["errors"]) {
+        if (response == null || !response["data"]) {
           return (noResultReturn(searchWords, "0"));
         }
 
@@ -58,7 +58,15 @@ async function findGameWithName(req,isComingSoon) {
         }
 
         for (let index = 0; index < elements.length; index++) {
+
           const element = elements[index];
+
+          //Bu yoksa sayfa silinmiş veya değiştirilmiş olabilir o yüzden array den siliyoruz 
+          if(element["catalogNs"]["mappings"] === null){
+            delete elements[index];
+            continue;
+          }
+
           const epicAppUrl = "https://store.epicgames.com/en-US/p/"+element["catalogNs"]["mappings"][0]["pageSlug"];
           element["url"] = epicAppUrl;
 
