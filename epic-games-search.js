@@ -5,25 +5,38 @@ let SortDir;
 let Categories;
 let params;
 
-async function findGameWithName(searchAppName) {
-  // console.log("Edition: "+edition+" App: "+searchAppName);
+async function findGameWithName(req,isComingSoon) {
+
+  const getParams = req.params;
+  const query = req.query;
+
+  // return query.searchWords;
   setAppProperties();
-  searchAppName = searchAppName.replace("®", "");
+
+  var searchWords = query.searchWords;
+  searchWords = searchWords.replace("®", "");
 
   // if(edition == "Standard")
   // {
   //   params["categories"] = Categories.Games;
   // }
 
-  params["categories"] = Categories.Games;
-  params["searchWords"] = encodeURIComponent(searchAppName);
+  params["comingSoon"] = isComingSoon;
+  params["categories"] = getParams.categories;
+  params["searchWords"] = encodeURIComponent(searchWords);
   // params["searchWords"] = "mount";
+  params["locale"] = getParams.locale.toUpperCase();
+  params["country"] = getParams.country.toUpperCase();
+
   params["count"] = 40;
+
+
+  // return getParams.locale;
 
   const hashes = ["7d58e12d9dd8cb14c84a3ff18d360bf9f0caa96bf218f2c5fda68ba88d68a437"];
   const index = Math.floor(Math.random() * hashes.length);
 
-  return fetch("https://store.epicgames.com/graphql?operationName=searchStoreQuery&variables=%7B%22allowCountries%22:%22US%22,%22category%22:%22"+params["categories"]+"%22,%22comingSoon%22:"+params["comingSoon"]+",%22count%22:"+params["count"]+",%22country%22:%22US%22,%22keywords%22:%22"+params["searchWords"]+"%22,%22locale%22:%22en-US%22,%22sortBy%22:%22"+params["sortBy"]+"%22,%22sortDir%22:%22"+params["sortDir"]+"%22,%22start%22:"+params["start"]+",%22tag%22:%22%22,%22withPrice%22:true%7D&extensions=%7B%22persistedQuery%22:%7B%22version%22:1,%22sha256Hash%22:%22"+hashes[index]+"%22%7D%7D", {
+  return fetch("https://store.epicgames.com/graphql?operationName=searchStoreQuery&variables=%7B%22allowCountries%22:%22US%22,%22category%22:%22"+params["categories"]+"%22,%22comingSoon%22:"+params["comingSoon"]+",%22count%22:"+params["count"]+",%22country%22:%22"+params["country"]+"%22,%22keywords%22:%22"+params["searchWords"]+"%22,%22locale%22:%22"+params["locale"]+"%22,%22sortBy%22:%22"+params["sortBy"]+"%22,%22sortDir%22:%22"+params["sortDir"]+"%22,%22start%22:"+params["start"]+",%22tag%22:%22%22,%22withPrice%22:true%7D&extensions=%7B%22persistedQuery%22:%7B%22version%22:1,%22sha256Hash%22:%22"+hashes[index]+"%22%7D%7D", {
     "headers": {
       "accept": "application/json, text/plain, */*",
       "x-requested-with": "XMLHttpRequest",
@@ -35,13 +48,13 @@ async function findGameWithName(searchAppName) {
       .then(function(response) {
 
         if (response == null || response["errors"]) {
-          return (noResultReturn(searchAppName, "0"));
+          return (noResultReturn(searchWords, "0"));
         }
 
         const elements = response["data"]["Catalog"]["searchStore"]["elements"];
 
         if (elements.length == 0) {
-          return (noResultReturn(searchAppName, "1"));
+          return (noResultReturn(searchWords, "1"));
         }
 
         for (let index = 0; index < elements.length; index++) {
@@ -94,7 +107,7 @@ else{
 }
 
 
-function noResultReturn(searchAppName,errorIndex){
+function noResultReturn(searchWords,errorIndex){
 
 var status = "";
 
@@ -106,7 +119,7 @@ else
 let result = {
     "error-index":errorIndex,
     "status":status,
-    "searchValue":searchAppName,
+    "searchValue":searchWords,
     // "steamAppId":steamAppId,
 }
 // dataArray.push(result);
@@ -145,18 +158,17 @@ Categories = Object.assign(Categories, {
     All:Categories.Games+Categories.GameBundle+Categories.GameEdition+Categories.GameAddOn+Categories.Editor+Categories.GameDemo+Categories.Apps
 })
 
-// console.log("Laaaaaaaaaaaaaaan");
-
 params = {
     "operationName":"searchStoreQuery",
     "searchWords":"",
-    "country":"US",
     "categories":Categories.All,
     "start":0,
     "count":40,
     "sortBy":SortBy.Relevancy,
     "sortDir":SortDir.DESC,
     "comingSoon":false,
+    "locale":"en",
+    "country":"US",
 };
 
 }
