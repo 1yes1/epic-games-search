@@ -12,7 +12,7 @@ app.listen(PORT,()=> {
 
 
 
-app.get('/comingSoon/:categories/:locale/:country/',(req,res)=>{
+app.get('/comingSoon/',(req,res)=>{
 
     // res.send(req.originalUrl.includes("comingSoon"));
     // epic.setAppProperties();
@@ -24,7 +24,7 @@ app.get('/comingSoon/:categories/:locale/:country/',(req,res)=>{
 })
 
 
-app.get('/onSale/:categories/:locale/:country/',(req,res)=>{
+app.get('/onSale/',(req,res)=>{
 
 
     // res.send(req.params);

@@ -22,11 +22,11 @@ async function findGameWithName(req,isComingSoon) {
   // }
 
   params["comingSoon"] = isComingSoon;
-  params["categories"] = getParams.categories;
+  params["categories"] = query.categories;
   params["searchWords"] = encodeURIComponent(searchWords);
   // params["searchWords"] = "mount";
-  params["locale"] = getParams.locale.toLowerCase();//Dil
-  params["country"] = getParams.country.toUpperCase();//Fiyat
+  params["locale"] = query.locale.toLowerCase();//Dil
+  params["country"] = query.country.toUpperCase();//Fiyat
 
   params["count"] = 40;
 
