@@ -40,7 +40,7 @@ async function findGameWithName(req,isComingSoon) {
   } 
 
   params["comingSoon"] = isComingSoon;
-  params["categories"] = categories;
+  params["categories"] = Categories[categories];
   params["searchWords"] = encodeURIComponent(searchWords);
   params["locale"] = locale;//Dil
   params["country"] = country;//Fiyat
