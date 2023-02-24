@@ -12,22 +12,38 @@ async function findGameWithName(req,isComingSoon) {
 
   // return query.searchWords;
   setAppProperties();
+  // return (query.hasOwnProperty("country")) ;
 
-  var searchWords = query.searchWords;
-  searchWords = searchWords.replace("®", "");
+  var searchWords = "";
+  if(query.hasOwnProperty("searchWords")) 
+  {
+    searchWords = query.searchWords;
+    searchWords = searchWords.replace("®", "");
+  }
 
-  // if(edition == "Standard")
-  // {
-  //   params["categories"] = Categories.Games;
-  // }
+  var country = "US";
+  if(query.hasOwnProperty("country")) 
+  {
+    country = query.country.toUpperCase();
+  }
+
+  var locale = "us";
+  if(query.hasOwnProperty("locale")) 
+  {
+    locale = query.locale.toLowerCase();
+  }
+
+  var categories = "Games";
+  if(query.hasOwnProperty("locale"))
+  {
+    categories = query.categories;
+  } 
 
   params["comingSoon"] = isComingSoon;
-  params["categories"] = query.categories;
+  params["categories"] = categories;
   params["searchWords"] = encodeURIComponent(searchWords);
-  // params["searchWords"] = "mount";
-  params["locale"] = query.locale.toLowerCase();//Dil
-  params["country"] = query.country.toUpperCase();//Fiyat
-
+  params["locale"] = locale;//Dil
+  params["country"] = country;//Fiyat
   params["count"] = 40;
 
   const hashes = ["7d58e12d9dd8cb14c84a3ff18d360bf9f0caa96bf218f2c5fda68ba88d68a437"];
