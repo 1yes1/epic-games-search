@@ -34,7 +34,7 @@ async function findGameWithName(req,isComingSoon) {
   }
 
   var categories = "Games";
-  if(query.hasOwnProperty("locale"))
+  if(query.hasOwnProperty("categories"))
   {
     categories = query.categories;
   } 
